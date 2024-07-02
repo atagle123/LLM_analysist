@@ -5,7 +5,7 @@ from torch import cuda
 from langchain.llms.huggingface_pipeline import HuggingFacePipeline
 
 DEVICE = f'cuda:{cuda.current_device()}' if cuda.is_available() else None
-MODEL_NAME = "mistralai/Mixtral-8x22B-Instruct-v0.1"
+MODEL_NAME = "mistralai/Mistral-7B-Instruct-v0.1" #mistralai/Mixtral-8x22B-Instruct-v0.1"
 
 def get_llm():
     """
@@ -48,4 +48,8 @@ def get_llm():
     llm = HuggingFacePipeline(pipeline=pipeline)
     return llm
 
-llm = get_llm()
+
+
+
+if __name__=="__main__":
+    llm = get_llm()

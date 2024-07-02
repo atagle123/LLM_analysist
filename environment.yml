@@ -7,5 +7,7 @@ dependencies:
   - pip
   - transformers
   - langchain
+  - langchain-community
   - pip:
     - torch
+    - bitsandbytes
