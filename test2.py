@@ -30,17 +30,16 @@ from llama_index.core.postprocessor import SimilarityPostprocessor,KeywordNodePo
 
 retriever = VectorIndexRetriever(
     index=index,
-    similarity_top_k=5,
+    similarity_top_k=3,
 )
+
 
 #query_engine = index.as_query_engine()
 
 
 #response = query_engine.query("rentabilidad bruta ingresos 2021")
 #print(response)
-node_postprocessors = [
-        SimilarityPostprocessor(similarity_cutoff=0.7),
-    ]
+
 #response = query_engine.query("rentabilidad bruta ingresos 2021, percentage with decimals")
 #print(response)
 
@@ -58,25 +57,28 @@ from llama_index.core import get_response_synthesizer
 
 response_synthesizer = get_response_synthesizer(
     response_mode="compact",
-    text_qa_template=text_qa_template
 )
 
 from llama_index.core.query_engine import RetrieverQueryEngine
 
+
+# assemble query engine
 query_engine = RetrieverQueryEngine(
     retriever=retriever,
-    node_postprocessors=node_postprocessors,
-    response_synthesizer=response_synthesizer
+    response_synthesizer=response_synthesizer,
 )
 
 from llama_index.core.tools import QueryEngineTool, ToolMetadata
+response = query_engine.query("rentabilidad bruta ingresos 2021")
+
+print(response.response)
 
 vector_query_engine_tool = QueryEngineTool(
             query_engine = query_engine,
             metadata = ToolMetadata(
             name="besalco financial statement",
             description="You can find financial statement information here",
-            )
+            ),
         )
 
 
@@ -84,7 +86,7 @@ system_prompt = """You are a expert financial analyst provide an answer to the f
 llm = OpenAI(model="gpt-3.5-turbo", temperature=0)
 
 agent = ReActAgent.from_tools(
-                    [vector_query_engine_tool],
+                   # [vector_query_engine_tool],
                     llm=llm,
                     system_prompt=system_prompt
                 )
