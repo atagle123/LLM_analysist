@@ -5,9 +5,10 @@ channels:
 dependencies:
   - python=3.10 
   - pip
-  - transformers
-  - langchain
-  - langchain-community
   - pip:
-    - torch
-    - bitsandbytes
+    - python-dotenv
+    - llama-index
+    - llama-index-readers-file
+    - llama-index-agent-openai
+    - llama-index-embeddings-openai
+    - llama-index-llms-openai

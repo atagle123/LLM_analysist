@@ -1,6 +1,8 @@
 /ignore
 /data
 /to_do_list.txt
+test.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
