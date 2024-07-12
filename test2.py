@@ -22,18 +22,29 @@ pipeline = IngestionPipeline(  # default uses open ai embedding (ada)
     ]
 )
 
-nodes = pipeline.run(documents=documents)
+nodes = pipeline.run(documents=documents, num_workers=4)
 
-index = VectorStoreIndex(nodes)
+index = VectorStoreIndex(nodes=nodes)
+
 from llama_index.core.retrievers import VectorIndexRetriever
 from llama_index.core.postprocessor import SimilarityPostprocessor,KeywordNodePostprocessor
+#vector_retriever = index.as_retriever(similarity_top_k=2)
 
 retriever = VectorIndexRetriever(
     index=index,
     similarity_top_k=3,
 )
 
+# configure response synthesizer
+response_synthesizer = get_response_synthesizer(
+    response_mode="tree_summarize",
+)
 
+# assemble query engine
+query_engine = RetrieverQueryEngine(
+    retriever=retriever,
+    response_synthesizer=response_synthesizer,
+)
 #query_engine = index.as_query_engine()
 
 
