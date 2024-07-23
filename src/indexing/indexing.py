@@ -1,4 +1,3 @@
-from typing import Any
 from llama_index.core import VectorStoreIndex,StorageContext, load_index_from_storage
 
 
@@ -15,6 +14,7 @@ class Nodes_Indexing:
     def make_index(self,index_id):
         self.index = VectorStoreIndex(self.nodes)
         self.index.set_index_id(index_id)
+        return(self.index)
 
     def __call__(self):
         return(self.index)
