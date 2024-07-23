@@ -30,7 +30,7 @@ def main():
 
     nodes_index=Nodes_Indexing()
     nodes_index.add_nodes(nodes)
-    index=nodes_index.make_index()
+    index=nodes_index.make_index(index_id="razonados_besalco")
 
     query_engine=Index_query_engine(index)
     query_engine=query_engine.make_query_engine()
@@ -40,8 +40,8 @@ def main():
     vector_query_engine_tool = QueryEngineTool(
             query_engine = query_engine,
             metadata = ToolMetadata(
-            name="besalco financial statement",
-            description="You can find financial statement information here",
+            name='besalco_financial_statement',
+            description='You can find financial statement information here',
             ),
         )
     
@@ -49,16 +49,17 @@ def main():
 
     llm = OpenAI(model="gpt-3.5-turbo", temperature=0)
 
-    agent = ReActAgent.from_tools(
-                        tools,
+    agent = OpenAIAgent.from_tools(
+                        tools(),
                         llm=llm,
-                        system_prompt=financial_prompt
+                        system_prompt=financial_prompt,
+                        verbose=True
                     )
 
 
     ### interact ###
 
-    response = agent.chat('rentabilidad bruta ingresos 2021, percentage with decimals')
+    response = agent.chat('besalco rentabilidad bruta ingresos 2021, percentage with decimals')
     print(response.response)
 
 

@@ -1,1 +1,1 @@
-from prompt import *
+from .prompt import *
