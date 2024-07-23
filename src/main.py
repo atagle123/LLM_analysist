@@ -25,7 +25,7 @@ def main():
 
     load_dotenv()
    
-    pdf_load=PDF_loading()
+    pdf_load=PDF_loading(data_path="data")
     nodes=pdf_load.make_nodes()
 
     nodes_index=Nodes_Indexing()
