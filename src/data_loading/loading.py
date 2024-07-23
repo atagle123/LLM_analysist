@@ -11,10 +11,29 @@ from llama_index.core.extractors import TitleExtractor
 from llama_index.core.ingestion import IngestionPipeline, IngestionCache
 
 
-import chromadb
 from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
-from llama_index.vector_stores.chroma import ChromaVectorStore
 from llama_index.core import StorageContext
+
+
+
+class PDF_loading:
+    def __init__(self,data_path="data"):
+        current_dir=os.getcwd()
+        self.filespath=os.path.join(current_dir,data_path)
+
+
+    def load_pdf(self):
+        documents = SimpleDirectoryReader(self.filespath).load_data()
+
+    def make_nodes(self):
+        pipeline = IngestionPipeline(  # default uses open ai embedding (ada)
+        transformations=[
+            SentenceSplitter(chunk_size=25, chunk_overlap=0),
+            TitleExtractor(),
+            OpenAIEmbedding(),
+        ])
+
+        nodes = pipeline.run(documents=documents)
 
 
 
