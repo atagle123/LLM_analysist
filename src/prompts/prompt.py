@@ -1,6 +1,11 @@
 from llama_index import PromptTemplate
 
 
+
+financial_prompt = """You are a expert financial analyst provide an answer to the following"""
+
+
+
 instruction_str = """\
     1. Convert the query to executable Python code using Pandas.
     2. The final line of code should be a Python expression that can be called with the `eval()` function.
