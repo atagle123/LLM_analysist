@@ -16,19 +16,21 @@ load_dotenv()
 
 
 class PDF_loading:
-    def __init__(self,data_path="data"): # loads all the pdfs in the given directory
-        current_dir=os.getcwd()
-        self.filespath=os.path.join(current_dir,data_path)
-        self.load_pdf()
+    def __init__(self,input_dir=None,input_files=None): # loads all the pdfs in the given directory
+        if input_dir:
+            current_dir=os.getcwd()
+            input_dir=os.path.join(current_dir,input_dir)
 
-    def load_pdf(self):
-        documents = SimpleDirectoryReader(self.filespath).load_data()
+        self.load_pdf(input_dir,input_files)
+
+    def load_pdf(self,input_dir=None,input_files=None):
+        documents = SimpleDirectoryReader(input_dir=input_dir,input_files=input_files).load_data()
         self.documents=documents
 
     def make_nodes(self):
         pipeline = IngestionPipeline(  # default uses open ai embedding (ada)
         transformations=[
-            SentenceSplitter(chunk_size=128, chunk_overlap=10),
+            SentenceSplitter(chunk_size=256, chunk_overlap=20),
             TitleExtractor(),
             OpenAIEmbedding(),
         ])

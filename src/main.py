@@ -3,7 +3,7 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from src.data_loading import PDF_loading
-from src.indexing import Nodes_Indexing
+from src.indexing import Nodes_Indexing,Index_loading
 from src.retriever import Index_query_engine
 from src.tools import Tools
 
@@ -25,13 +25,16 @@ def main():
 
     load_dotenv()
    
-    pdf_load=PDF_loading(data_path="C:/Users/ataglem/Desktop/LLM_analysis/data/razonados/Analisis_Razonado_1Q23")
+    """pdf_load=PDF_loading(input_files=["./data/razonados/Analisis_Razonado_1Q23.pdf"])
     nodes=pdf_load.make_nodes()
 
     nodes_index=Nodes_Indexing()
     nodes_index.add_nodes(nodes)
     index=nodes_index.make_index(index_id="razonados_besalco")
-
+    nodes_index.store_index(data_dir="./storage")"""
+    index_load=Index_loading()
+    index_load.load_index(data_dir="./storage",index_id="razonados_besalco")
+    index=index_load()
     query_engine=Index_query_engine(index)
     query_engine=query_engine.make_query_engine()
     

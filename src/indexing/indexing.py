@@ -1,3 +1,4 @@
+from typing import Any
 from llama_index.core import VectorStoreIndex,StorageContext, load_index_from_storage
 
 
@@ -21,7 +22,7 @@ class Nodes_Indexing:
     
     def store_index(self,data_dir):
         self.index.storage_context.persist(persist_dir=data_dir) #"./storage
-
+        print(f"Storing index in {data_dir}")
 
 class Index_loading:
     def __init__(self) -> None:
@@ -32,3 +33,6 @@ class Index_loading:
         # load index
         index = load_index_from_storage(storage_context, index_id=index_id)
         self.index=index
+
+    def __call__(self, *args: Any, **kwds: Any) -> Any:
+        return(self.index)
