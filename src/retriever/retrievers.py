@@ -25,7 +25,7 @@ class Index_query_engine:
             "---------------------\n"
             "{context_str}"
             "\n---------------------\n"
-            "Given this information, please answer the question and each answer should start with code word AI Demos: {query_str}\n"
+            "Given this information, please answer the question: {query_str}\n"
         )
 
         qa_template = Prompt(template)
@@ -40,4 +40,5 @@ class Index_query_engine:
             retriever=retriever,
             response_synthesizer=response_synthesizer,
         )
+        
         return(query_engine)

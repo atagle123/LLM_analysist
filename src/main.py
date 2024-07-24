@@ -25,7 +25,7 @@ def main():
 
     load_dotenv()
    
-    pdf_load=PDF_loading(data_path="data")
+    pdf_load=PDF_loading(data_path="C:/Users/ataglem/Desktop/LLM_analysis/data/razonados/Analisis_Razonado_1Q23")
     nodes=pdf_load.make_nodes()
 
     nodes_index=Nodes_Indexing()
@@ -58,9 +58,14 @@ def main():
 
 
     ### interact ###
+    while True:
+        user_input = input("Ask something: ")
 
-    response = agent.chat('besalco rentabilidad bruta ingresos 2021, percentage with decimals')
-    print(response.response)
+        if not user_input:
+            break
+        
+        response = agent.chat(user_input)#('besalco rentabilidad bruta ingresos 2021, percentage with decimals')
+        print(response.response)
 
 
     pass
