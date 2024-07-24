@@ -27,10 +27,10 @@ class PDF_loading:
         documents = SimpleDirectoryReader(input_dir=input_dir,input_files=input_files).load_data()
         self.documents=documents
 
-    def make_nodes(self):
+    def make_nodes(self,chunk_size=256,chunk_overlap=20):
         pipeline = IngestionPipeline(  # default uses open ai embedding (ada)
         transformations=[
-            SentenceSplitter(chunk_size=256, chunk_overlap=20),
+            SentenceSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap),
             TitleExtractor(),
             OpenAIEmbedding(),
         ])
