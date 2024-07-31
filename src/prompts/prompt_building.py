@@ -7,6 +7,9 @@ from llama_index.core import PromptTemplate
 from utils.json_utils import read_json
 
 class Prompt_builder:
+    """ Class to build a prompt
+        Works by iteratively adding strings
+    """
     def __init__(self,max_context=16000) -> None:
         self.prompt=""
         self.max_context=max_context
@@ -77,7 +80,15 @@ class Industry_prompt(Prompt_builder):
 
     def prompt_ratios_building(self,ratios_year,ratios_indexes=["Growth (Var. YoY)","Margins","Liquidity & leverage metrics","Turnover metrics","Profitability metrics"]): 
         """
+        Function to build the prompt ratios, consider dataframe preprocessing and a json preprocesser
         
+        Args:
+            ratios_year (int): first year to search info (note that the code assumes that the firt column is the q1 2017)
+            ratios_indexes (list os strings): indexes of the ratios category to include in the prompt see the excel output
+        
+        Returns:
+            ratios_prompt (str): prompt with the ratios added
+
         """ 
         sheet_name = f'Output {self.industry}'
 
@@ -94,6 +105,16 @@ class Industry_prompt(Prompt_builder):
         return(prompt)
 
     def preprocess_output(self,df):
+        """ 
+        Function to process the dataframe 
+
+        Args:
+            df (pandas.df): input dataframe
+        
+        Returns:
+            df (pandas.df): output dataframe
+        
+        """
 
         df = df.dropna(axis=1, how='all') # Eliminar columnas completamente vacías
         df = df[df.index.notnull()] # Eliminar indices vacíos
@@ -109,6 +130,16 @@ class Industry_prompt(Prompt_builder):
         return(df)
 
     def parse_json_to_prompt(self,json_object):
+        """ 
+        Function to construct the prompt from the dicts of the ratios, considering a string preprocessing to lower the context len  
+
+        Args:
+            json_object (dict of dicts): input of dicts
+        
+        Returns:
+            prompt (str): processed prompt with the ratios information in it
+        
+        """
         prompt=f"Now i will provide you all the relevant metrics and information of the last periods for {self.industry}"
         for index, values_dict in json_object.items():
             index=eval(index)
@@ -121,12 +152,23 @@ class Industry_prompt(Prompt_builder):
         return(prompt)
 
     def json_parser(self,dict,index):
+        """ 
+        Function to process the json focusing on the numbers and non informative tokens.  
+
+        Args:
+            dict (dict): dict to process
+            index (list of strings): used to search for "%", and if contains "%" a "%" is added at the end of the number to provide better context
+        
+        Returns:
+            prompt (str): processed prompt with the ratios information in it
+        
+        """
 
         if "%" in index[0] or "%" in index[1]:
-            dict={key: self.format_percentage(value) for key, value in dict.items()}
+            dict={key: self.format_percentage(value) for key, value in dict.items()} # procentajes
 
         else:
-            dict={key: self.format_json_values(value) for key, value in dict.items()} # ver el tema para los porcentajes... 
+            dict={key: self.format_json_values(value) for key, value in dict.items()} # numeros
 
         json_str=json.dumps(dict, indent=0)
         json_str=json_str.replace('"', '')
@@ -138,6 +180,9 @@ class Industry_prompt(Prompt_builder):
         return(json_str)
     
     def format_percentage(self,num):
+        """
+        Function to add a number % at the end
+        """
         if num is None:
             return None  # Keep null values as is
         
