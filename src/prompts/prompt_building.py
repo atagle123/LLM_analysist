@@ -224,6 +224,6 @@ class Industry_prompt(Prompt_builder):
 
 
 if __name__=="__main__":
-    industry_prompt=Industry_prompt(industry="Enaex")
+    industry_prompt=Industry_prompt(industry="Enaex") # PVSA
     prompt=industry_prompt.main_prompt_builder()
     print(prompt)
