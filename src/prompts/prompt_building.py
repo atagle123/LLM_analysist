@@ -50,7 +50,16 @@ class Industry_prompt(Prompt_builder):
         pass
 
     def main_prompt_builder(self,ratios_year=2020):
+        """
+        Main flux to build the prompt
 
+        Args:
+            ratios_year (int): first year to search info (note that the code assumes that the firt column is the q1 2017)
+
+        Returns:
+            prompt (str): final prompt for the given industry
+        
+        """
         info_dict=read_json(file=self.prompt_path) # change to self file
 
         self.add_prompt(f"You are an expert financial analyst and you have to provide and exhaustive analysis of the {self.industry} company, i will provide you information below:")
@@ -66,7 +75,10 @@ class Industry_prompt(Prompt_builder):
 
 
 
-    def prompt_ratios_building(self,ratios_year,ratios_indexes=["Growth (Var. YoY)","Margins","Liquidity & leverage metrics","Turnover metrics","Profitability metrics"]):  
+    def prompt_ratios_building(self,ratios_year,ratios_indexes=["Growth (Var. YoY)","Margins","Liquidity & leverage metrics","Turnover metrics","Profitability metrics"]): 
+        """
+        
+        """ 
         sheet_name = f'Output {self.industry}'
 
         # Read the Excel file
@@ -170,4 +182,3 @@ if __name__=="__main__":
     industry_prompt=Industry_prompt(industry="Enaex")
     prompt=industry_prompt.main_prompt_builder()
     print(prompt)
-    print(len(prompt))
