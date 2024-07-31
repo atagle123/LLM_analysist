@@ -45,7 +45,7 @@ class Prompt_builder:
 
 
 class Industry_prompt(Prompt_builder):
-    def __init__(self,industry="Enaex",ratios_path="data\outputs\SIGDO KOPPERS S.A. Final.xlsx",prompt_path="src\prompts",max_context=16000) -> None: # enaex, max context for gpt 3.5 
+    def __init__(self,industry="Enaex",ratios_path="data\outputs\SIGDO KOPPERS S.A. Final.xlsx",prompt_path="data\prompts",max_context=16000) -> None: # enaex, max context for gpt 3.5 
         super().__init__(max_context=max_context)
         self.industry=industry
         self.ratios_path=ratios_path
