@@ -4,6 +4,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 import pandas as pd
 import json
 from llama_index.core import PromptTemplate
+from utils.json_utils import read_json
 
 class Prompt_builder:
     def __init__(self,max_context=16000) -> None:
@@ -49,10 +50,14 @@ class Industry_prompt(Prompt_builder):
 
     def main_prompt_builder(self,ratios_year=2020):
 
+        info_dict=read_json(file=f"src\prompts\{self.industry}_prompts.json") # change to self file
         self.add_prompt(f"You are an expert financial analyst and you have to provide and exhaustive analysis of the {self.industry} company, i will provide you information below:")
         self.add_prompt(f"Here i will display you all the relevant information about {self.industry} company.")
+        self.add_prompt(info_dict["introduction"])
         ratios_prompt=self.prompt_ratios_building(ratios_year)
         self.add_prompt(ratios_prompt)
+
+
 
         return(self.prompt)
 
@@ -122,7 +127,6 @@ class Industry_prompt(Prompt_builder):
             return None  # Keep null values as is
         
         return(f"{num}%")
-
 
     def format_number(self,num):
         """Formats a number to a shorter string representation."""
