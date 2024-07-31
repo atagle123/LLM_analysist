@@ -61,7 +61,7 @@ def main():
 
         ### add retriever ###
 
-        description=f"estados financieras con informacion financiera y detalle de las compañias que forman parte de sigdo koppers para {quarter}""Use a detailed plain text question as input to the tool."
+        description=f"estados financieras con informacion financiera y detalle de las compañias que forman parte de sigdo koppers para {quarter}""Use a extense detailed plain text question as input to the tool."
         tools.add_retriever(query_engine=qe,name=name,description=description)
 
     llm = OpenAI(model="gpt-3.5-turbo", temperature=0)
