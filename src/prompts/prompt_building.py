@@ -146,7 +146,7 @@ class Industry_prompt(Prompt_builder):
             category_name=index[0]
             metric_name=index[1]
             json_str=self.json_parser(values_dict,index)
-            intro_metric=f"Here you have information about {category_name} {metric_name} metric, dispayed for all quarters {json_str} \n" # maybe add with a dict information about each metric and what does it mean
+            intro_metric=f"Here you have information about {category_name} {metric_name} metric, dispayed for the last quarters {json_str} \n" # maybe add with a dict information about each metric and what does it mean
             prompt+=intro_metric
 
         return(prompt)
