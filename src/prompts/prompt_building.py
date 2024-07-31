@@ -42,18 +42,21 @@ class Prompt_builder:
 
 
 class Industry_prompt(Prompt_builder):
-    def __init__(self,industry="Enaex",ratios_path="data\outputs\SIGDO KOPPERS S.A. Final.xlsx",max_context=16000) -> None: # enaex, max context for gpt 3.5 
+    def __init__(self,industry="Enaex",ratios_path="data\outputs\SIGDO KOPPERS S.A. Final.xlsx",prompt_path="src\prompts",max_context=16000) -> None: # enaex, max context for gpt 3.5 
         super().__init__(max_context=max_context)
         self.industry=industry
         self.ratios_path=ratios_path
+        self.prompt_path=os.path.join(prompt_path,f"{industry}_prompts.json") # cambiar path de datos... 
         pass
 
     def main_prompt_builder(self,ratios_year=2020):
 
-        info_dict=read_json(file=f"src\prompts\{self.industry}_prompts.json") # change to self file
+        info_dict=read_json(file=self.prompt_path) # change to self file
+
         self.add_prompt(f"You are an expert financial analyst and you have to provide and exhaustive analysis of the {self.industry} company, i will provide you information below:")
         self.add_prompt(f"Here i will display you all the relevant information about {self.industry} company.")
         self.add_prompt(info_dict["introduction"])
+
         ratios_prompt=self.prompt_ratios_building(ratios_year)
         self.add_prompt(ratios_prompt)
 
@@ -94,7 +97,7 @@ class Industry_prompt(Prompt_builder):
         return(df)
 
     def parse_json_to_prompt(self,json_object):
-        prompt=f"Know i will provide you all the relevant metrics and information of the last periods for {self.industry}"
+        prompt=f"Now i will provide you all the relevant metrics and information of the last periods for {self.industry}"
         for index, values_dict in json_object.items():
             index=eval(index)
             category_name=index[0]
@@ -160,9 +163,6 @@ class Industry_prompt(Prompt_builder):
         else:
             return self.format_number(data)  # Format the number
 
-
-        def build_introduction_to_industry_prompt(self,industry):
-            raise NotImplementedError
 
 
 
